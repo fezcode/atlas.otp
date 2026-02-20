@@ -1,0 +1,4 @@
+(name) atlas.otp
+(version) 0.1.0
+(description) High-visibility, minimalist terminal TOTP (2FA) manager.
+(license) MIT
