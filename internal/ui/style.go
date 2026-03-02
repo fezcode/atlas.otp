@@ -29,6 +29,10 @@ var (
 			Foreground(silver).
 			PaddingLeft(2)
 
+	cursorStyle = lipgloss.NewStyle().
+			Foreground(gold).
+			Bold(true)
+
 	otpCodeStyle = lipgloss.NewStyle().
 			Foreground(gold).
 			Bold(true).

@@ -18,14 +18,47 @@ func (m Model) View() string {
 		if len(m.store.Accounts) == 0 {
 			s.WriteString(itemStyle.Render("No accounts yet. Press 'a' to add one."))
 		} else {
-			for i, acc := range m.store.Accounts {
+			// Determine visible range
+			availableHeight := m.height - 15
+			if availableHeight < 3 {
+				availableHeight = 3
+			}
+
+			startIdx := 0
+			endIdx := len(m.store.Accounts)
+
+			if len(m.store.Accounts) > availableHeight {
+				startIdx = m.cursor - availableHeight/2
+				if startIdx < 0 {
+					startIdx = 0
+				}
+				endIdx = startIdx + availableHeight
+				if endIdx > len(m.store.Accounts) {
+					endIdx = len(m.store.Accounts)
+					startIdx = endIdx - availableHeight
+					if startIdx < 0 {
+						startIdx = 0
+					}
+				}
+			}
+
+			if startIdx > 0 {
+				s.WriteString(dimStyle.Render(fmt.Sprintf("  ... %d hidden above ...", startIdx)) + "\n")
+			}
+
+			for i := startIdx; i < endIdx; i++ {
+				acc := m.store.Accounts[i]
 				cursor := " "
 				style := itemStyle
 				if m.cursor == i {
-					cursor = ">"
+					cursor = cursorStyle.Render("❯")
 					style = selectedItemStyle
 				}
 				s.WriteString(style.Render(fmt.Sprintf("%s %s", cursor, acc.Name)) + "\n")
+			}
+
+			if endIdx < len(m.store.Accounts) {
+				s.WriteString(dimStyle.Render(fmt.Sprintf("  ... %d hidden below ...", len(m.store.Accounts)-endIdx)) + "\n")
 			}
 		}
 

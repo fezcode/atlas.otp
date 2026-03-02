@@ -40,6 +40,8 @@ type Model struct {
 	keys       keyMap
 	lastErr    string
 	copied     bool
+	width      int
+	height     int
 }
 
 func NewModel(store *storage.Store) Model {
@@ -57,6 +59,8 @@ func NewModel(store *storage.Store) Model {
 		inputSec:  tiSec,
 		help:     help.New(),
 		keys:     keys,
+		width:    80,
+		height:   24,
 	}
 }
 
@@ -66,6 +70,10 @@ func (m Model) Init() tea.Cmd {
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+	case tea.WindowSizeMsg:
+		m.width = msg.Width
+		m.height = msg.Height
+		return m, nil
 	case tickMsg:
 		return m, doTick()
 	case tea.KeyMsg:
