@@ -9,7 +9,7 @@ import (
 	"atlas.otp/internal/ui"
 )
 
-var Version = "0.1.0"
+var Version = "dev"
 
 func main() {
 	if len(os.Args) > 1 && (os.Args[1] == "-v" || os.Args[1] == "--version") {
